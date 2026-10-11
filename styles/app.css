@@ -1,0 +1,522 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    background-color: #1e1e1e;
+    color: #e2e8f0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   1. Window Titlebar & Quick Access Toolbar
+   ========================================================================== */
+.app-titlebar {
+    background-color: #1e1e1e;
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 38px;
+    padding: 0 12px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #2d2d2d;
+    font-size: 12px;
+}
+
+.quick-access-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-title-icon {
+    background: transparent;
+    border: none;
+    color: #cbd5e1;
+    width: 26px;
+    height: 26px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.btn-title-icon:hover {
+    background: #333333;
+    color: #ffffff;
+}
+
+.window-file-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #94a3b8;
+    letter-spacing: 0.3px;
+}
+
+.titlebar-right-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-avatar-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #3b82f6;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   2. Ribbon Tabs Navigation Bar (File, Home, Insert, Draw...)
+   ========================================================================== */
+.ribbon-tabs-header {
+    background-color: #1e1e1e;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    height: 30px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #2a2a2a;
+    gap: 2px;
+}
+
+.ribbon-tab-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    cursor: pointer;
+    border-radius: 3px 3px 0 0;
+    position: relative;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.ribbon-tab-btn:hover {
+    color: #e2e8f0;
+    background: #2a2a2a;
+}
+
+.ribbon-tab-btn.active {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.ribbon-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 8px;
+    right: 8px;
+    height: 2.5px;
+    background: #107c41; /* Microsoft Excel / OnlyOffice Active Green Indicator */
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+   3. Main Ribbon Action Body Toolbar
+   ========================================================================== */
+.ribbon-body {
+    background-color: #262626; /* Dark slate ribbon background matching screenshot */
+    border-bottom: 1px solid #333333;
+    display: flex;
+    align-items: center;
+    padding: 4px 10px;
+    height: 64px;
+    flex-shrink: 0;
+    gap: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.ribbon-section {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+}
+
+.ribbon-divider {
+    width: 1px;
+    height: 44px;
+    background: #383838;
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+.ribbon-row {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.ribbon-section-font,
+.ribbon-section-align,
+.ribbon-section-formulas,
+.ribbon-section-numbers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.ribbon-2row-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Ribbon Button Standard */
+.r-btn-icon,
+.r-btn-compact {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #d1d5db;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    font-size: 12px;
+}
+
+.r-btn-icon {
+    width: 26px;
+    height: 24px;
+}
+
+.r-btn-compact {
+    height: 24px;
+    padding: 0 6px;
+    min-width: 24px;
+}
+
+.r-btn-icon:hover,
+.r-btn-compact:hover,
+.r-btn-icon-labeled:hover {
+    background: #383838;
+    border-color: #4b5563;
+    color: #ffffff;
+}
+
+.r-btn-compact.active,
+.r-btn-icon.active {
+    background: #107c41;
+    color: #ffffff;
+    border-color: #15803d;
+}
+
+.dropdown-carat {
+    font-size: 8px;
+    margin-left: 2px;
+    opacity: 0.7;
+}
+
+/* Labeled icon buttons (Insert, Delete, Format) */
+.r-btn-icon-labeled {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #d1d5db;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    height: 52px;
+    cursor: pointer;
+    font-size: 11px;
+    gap: 3px;
+}
+
+/* Ribbon Select Dropdowns */
+.r-select {
+    background: #333333;
+    border: 1px solid #444444;
+    color: #f3f4f6;
+    border-radius: 3px;
+    height: 24px;
+    padding: 0 6px;
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+}
+
+.r-select:focus {
+    border-color: #107c41;
+}
+
+.r-select-font {
+    width: 125px;
+}
+
+.r-select-size {
+    width: 48px;
+}
+
+.r-select-num {
+    width: 115px;
+}
+
+/* Color Indicator with Bar */
+.color-picker-btn-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.r-btn-color-indicator {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #d1d5db;
+    border-radius: 3px;
+    width: 26px;
+    height: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.r-btn-color-indicator:hover {
+    background: #383838;
+    border-color: #4b5563;
+}
+
+.color-indicator-bar {
+    width: 16px;
+    height: 3px;
+    border-radius: 1px;
+    margin-top: 1px;
+}
+
+.hidden-native-color {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* Cell Styles Chips Gallery */
+.cell-styles-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: 175px;
+}
+
+.cell-style-chip {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 6px;
+    height: 22px;
+    border-radius: 2px;
+    border: 1px solid #404040;
+    background: #1e1e1e;
+    color: #e2e8f0;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 82px;
+    text-align: center;
+    transition: transform 0.1s ease;
+}
+
+.cell-style-chip:hover {
+    border-color: #3b82f6;
+    transform: scale(1.02);
+}
+
+.cell-style-chip.style-active-normal {
+    border: 1px solid #3b82f6;
+    background: #1e293b;
+    color: #ffffff;
+}
+
+.cell-style-chip.style-neutral {
+    background: #78350f;
+    color: #fde68a;
+    border-color: #b45309;
+}
+
+.r-btn-expand-gallery {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 10px;
+    padding: 2px 4px;
+}
+
+/* ==========================================================================
+   4. Formula Bar
+   ========================================================================== */
+.formula-bar-container {
+    background: #1e1e1e;
+    border-bottom: 1px solid #333333;
+    display: flex;
+    align-items: center;
+    padding: 3px 12px;
+    height: 32px;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.cell-address-box {
+    width: 60px;
+    height: 24px;
+    border: 1px solid #3d3d3d;
+    border-radius: 3px;
+    background: #2a2a2a;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 22px;
+    color: #f3f4f6;
+}
+
+.fx-symbol {
+    font-style: italic;
+    font-weight: bold;
+    color: #94a3b8;
+    font-size: 15px;
+    padding: 0 4px;
+}
+
+.formula-input {
+    flex: 1;
+    height: 24px;
+    border: 1px solid #3d3d3d;
+    border-radius: 3px;
+    background: #2a2a2a;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-family: 'Segoe UI', Consolas, monospace;
+    outline: none;
+    color: #f8fafc;
+}
+
+.formula-input:focus {
+    border-color: #107c41;
+    background: #1e1e1e;
+}
+
+/* ==========================================================================
+   5. Main Viewport & Canvas Grid Area
+   ========================================================================== */
+.spreadsheet-workspace {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.grid-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: cell;
+}
+
+/* In-Cell Floating Editor */
+.in-cell-editor {
+    position: absolute;
+    display: none;
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #107c41;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    outline: none;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    padding: 2px 6px;
+    z-index: 100;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   6. Bottom Sheet Tabs Bar
+   ========================================================================== */
+.sheet-tabs-bar {
+    background: #1e1e1e;
+    border-top: 1px solid #333333;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    height: 32px;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.sheet-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    height: 31px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: all 0.12s ease;
+}
+
+.sheet-tab:hover {
+    background: #2a2a2a;
+    color: #e5e7eb;
+}
+
+.sheet-tab.active {
+    background: #2d2d2d;
+    border-color: #404040;
+    color: #ffffff;
+    font-weight: 600;
+    border-top: 2px solid #107c41;
+}
+
+.btn-add-sheet {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.12s ease;
+}
+
+.btn-add-sheet:hover {
+    background: #2a2a2a;
+    color: #ffffff;
+}

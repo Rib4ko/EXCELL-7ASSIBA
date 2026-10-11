@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L7ASSIBA - Professional Spreadsheet Suite</title>
+    <link rel="stylesheet" href="styles/app.css">
+    <!-- ExcelJS library for native Microsoft Excel .XLSX support -->
+    <script src="node_modules/exceljs/dist/exceljs.min.js"></script>
+</head>
+<body class="dark-theme">
+    <!-- Top Window Titlebar & Quick Access Toolbar -->
+    <header class="app-titlebar">
+        <div class="quick-access-bar">
+            <span class="app-brand-pill" style="font-weight: 800; color: #22c55e; letter-spacing: 0.5px; margin-right: 6px; font-size: 13px;">L7ASSIBA</span>
+            <button id="btn-quick-save" class="btn-title-icon" title="Save (Ctrl+S)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            </button>
+            <button id="btn-quick-print" class="btn-title-icon" title="Print (Ctrl+P)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            </button>
+            <button id="btn-quick-sync" class="btn-title-icon" title="Auto-Sync Enabled">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/><polyline points="9 11 12 14 22 4"/></svg>
+            </button>
+            <button id="btn-undo-qa" class="btn-title-icon" title="Undo (Ctrl+Z)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+            </button>
+            <button id="btn-redo-qa" class="btn-title-icon" title="Redo (Ctrl+Y)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg>
+            </button>
+            <button class="btn-title-icon" title="More Commands">···</button>
+        </div>
+
+        <div class="window-file-title" id="window-file-title">
+            <span id="doc-title-text">L7ASSIBA - Business_Financial_Model.xlsx</span>
+        </div>
+
+        <div class="titlebar-right-controls">
+            <div class="user-avatar-badge" title="Active User">AT</div>
+            <button class="btn-title-icon" title="Comments">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </button>
+            <button class="btn-title-icon" title="Search (Ctrl+F)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Ribbon Tabs Menu -->
+    <nav class="ribbon-tabs-header">
+        <button class="ribbon-tab-btn" data-tab="file" id="tab-file">File</button>
+        <button class="ribbon-tab-btn active" data-tab="home" id="tab-home">Home</button>
+        <button class="ribbon-tab-btn" data-tab="insert" id="tab-insert">Insert</button>
+        <button class="ribbon-tab-btn" data-tab="draw" id="tab-draw">Draw</button>
+        <button class="ribbon-tab-btn" data-tab="layout" id="tab-layout">Layout</button>
+        <button class="ribbon-tab-btn" data-tab="formula" id="tab-formula">Formula</button>
+        <button class="ribbon-tab-btn" data-tab="data" id="tab-data">Data</button>
+        <button class="ribbon-tab-btn" data-tab="collaboration" id="tab-collaboration">Collaboration</button>
+        <button class="ribbon-tab-btn" data-tab="protection" id="tab-protection">Protection</button>
+        <button class="ribbon-tab-btn" data-tab="view" id="tab-view">View</button>
+        <button class="ribbon-tab-btn" data-tab="plugins" id="tab-plugins">Plugins</button>
+        <button class="ribbon-tab-btn" data-tab="ai" id="tab-ai">AI</button>
+    </nav>
+
+    <!-- Hidden Native File Input -->
+    <input type="file" id="file-input" accept=".xlsx,.csv,.json" style="display: none;">
+
+    <!-- Ribbon Action Toolbar Body -->
+    <div class="ribbon-body" id="ribbon-body">
+        <!-- 1. Clipboard Group (Cut, Copy, Paste, Format Painter) -->
+        <div class="ribbon-section ribbon-section-clipboard">
+            <div class="ribbon-2row-col">
+                <button id="btn-copy" class="r-btn-icon" title="Copy (Ctrl+C)">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+                <button id="btn-paste" class="r-btn-icon" title="Paste (Ctrl+V)">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                    <span class="dropdown-carat">▾</span>
+                </button>
+            </div>
+            <div class="ribbon-2row-col">
+                <button id="btn-cut" class="r-btn-icon" title="Cut (Ctrl+X)">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+                </button>
+                <button id="btn-format-painter" class="r-btn-icon" title="Format Painter">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.37 2.63L14 7l3 3 4.37-4.37a2.12 2.12 0 1 0-3-3z"/><path d="M9 12l-7 7v3h3l7-7"/><path d="M14 7l3 3"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="ribbon-divider"></div>
+
+        <!-- 2. Font & Text Styling Group -->
+        <div class="ribbon-section ribbon-section-font">
+            <!-- Row 1: Font Family, Font Size, Increase, Decrease, Clear Format -->
+            <div class="ribbon-row">
+                <select id="font-family-select" class="r-select r-select-font">
+                    <option value="Calibri" selected>Calibri</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Segoe UI">Segoe UI</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Consolas">Consolas</option>
+                    <option value="Verdana">Verdana</option>
+                </select>
+                <select id="font-size-select" class="r-select r-select-size">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11" selected>11</option>
+                    <option value="12">12</option>
+                    <option value="14">14</option>
+                    <option value="16">16</option>
+                    <option value="18">18</option>
+                    <option value="20">20</option>
+                    <option value="24">24</option>
+                </select>
+                <button id="btn-font-increase" class="r-btn-compact" title="Increase Font Size">A<sup>▲</sup></button>
+                <button id="btn-font-decrease" class="r-btn-compact" title="Decrease Font Size">A<sup>▼</sup></button>
+                <button id="btn-clear-format" class="r-btn-compact" title="Clear Formatting">A<span style="font-size: 10px; color: #ef4444;">⌫</span></button>
+            </div>
+
+            <!-- Row 2: Bold, Italic, Underline, Strikethrough, Sub/Super, Text Color, Fill Color, Borders -->
+            <div class="ribbon-row">
+                <button id="btn-bold" class="r-btn-compact" title="Bold (Ctrl+B)"><b>B</b></button>
+                <button id="btn-italic" class="r-btn-compact" title="Italic (Ctrl+I)"><i>I</i></button>
+                <button id="btn-underline" class="r-btn-compact" title="Underline (Ctrl+U)"><u>U</u></button>
+                <button id="btn-strikethrough" class="r-btn-compact" title="Strikethrough"><s>S</s></button>
+                <button id="btn-subscript" class="r-btn-compact" title="Subscript" style="font-size: 11px;">X<sub>2</sub></button>
+                
+                <div class="color-picker-btn-wrapper" title="Font Color">
+                    <button class="r-btn-color-indicator">
+                        <span>A</span>
+                        <span id="font-color-bar" class="color-indicator-bar" style="background-color: #ef4444;"></span>
+                    </button>
+                    <input type="color" id="font-color-picker" class="hidden-native-color" value="#ef4444">
+                </div>
+
+                <div class="color-picker-btn-wrapper" title="Fill Color">
+                    <button class="r-btn-color-indicator">
+                        <span>🎨</span>
+                        <span id="bg-color-bar" class="color-indicator-bar" style="background-color: #eab308;"></span>
+                    </button>
+                    <input type="color" id="bg-color-picker" class="hidden-native-color" value="#eab308">
+                </div>
+
+                <button id="btn-borders" class="r-btn-compact" title="Borders">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+                    <span class="dropdown-carat">▾</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="ribbon-divider"></div>
+
+        <!-- 3. Alignment Group -->
+        <div class="ribbon-section ribbon-section-align">
+            <!-- Row 1: Top, Middle, Bottom align, Orientation, Indent -->
+            <div class="ribbon-row">
+                <button id="btn-valign-top" class="r-btn-compact" title="Top Align">⎴</button>
+                <button id="btn-valign-middle" class="r-btn-compact active" title="Middle Align">⯐</button>
+                <button id="btn-valign-bottom" class="r-btn-compact" title="Bottom Align">⎵</button>
+                <button id="btn-orientation" class="r-btn-compact" title="Orientation">ab↗</button>
+                <button id="btn-indent-left" class="r-btn-compact" title="Decrease Indent">⇤</button>
+                <button id="btn-indent-right" class="r-btn-compact" title="Increase Indent">⇥</button>
+            </div>
+
+            <!-- Row 2: Align Left, Center, Right, Justify, Merge & Center, Wrap Text -->
+            <div class="ribbon-row">
+                <button id="btn-align-left" class="r-btn-compact" title="Align Left">⯇</button>
+                <button id="btn-align-center" class="r-btn-compact" title="Center">☰</button>
+                <button id="btn-align-right" class="r-btn-compact" title="Align Right">⯈</button>
+                <button id="btn-wrap-text" class="r-btn-compact" title="Wrap Text">↩ Wrap</button>
+                <button id="btn-merge-center" class="r-btn-compact" title="Merge & Center">⧉ Merge</button>
+            </div>
+        </div>
+
+        <div class="ribbon-divider"></div>
+
+        <!-- 4. Formulas, Functions & Tools -->
+        <div class="ribbon-section ribbon-section-formulas">
+            <div class="ribbon-row">
+                <button id="btn-formula-sum" class="r-btn-compact" title="AutoSum (∑)">∑ <span class="dropdown-carat">▾</span></button>
+                <button id="btn-formula-avg" class="r-btn-compact" title="Average">Avg</button>
+                <button id="btn-fill-down" class="r-btn-compact" title="Fill Down">↓</button>
+                <button id="btn-sort-asc" class="r-btn-compact" title="Sort Ascending">A-Z↓</button>
+                <button id="btn-sort-desc" class="r-btn-compact" title="Sort Descending">Z-A↓</button>
+            </div>
+            <div class="ribbon-row">
+                <button id="btn-filter" class="r-btn-compact" title="AutoFilter">▼ Filter</button>
+                <button id="btn-clear-filter" class="r-btn-compact" title="Clear Filter">✕ Filter</button>
+                <button id="btn-freeze-pane" class="r-btn-compact" title="Freeze Top Row">❄ Freeze</button>
+                <button id="btn-clear" class="r-btn-compact" title="Clear Selected Cells">⌫ Clear</button>
+            </div>
+        </div>
+
+        <div class="ribbon-divider"></div>
+
+        <!-- 5. Number Format Group -->
+        <div class="ribbon-section ribbon-section-numbers">
+            <div class="ribbon-row">
+                <select id="num-format-select" class="r-select r-select-num">
+                    <option value="general" selected>General</option>
+                    <option value="number">Number</option>
+                    <option value="currency">Currency ($)</option>
+                    <option value="percent">Percentage (%)</option>
+                    <option value="date">Short Date</option>
+                </select>
+            </div>
+            <div class="ribbon-row">
+                <button id="btn-format-currency" class="r-btn-compact" title="Accounting Number Format">$</button>
+                <button id="btn-format-percent" class="r-btn-compact" title="Percent Style (%)">%</button>
+                <button id="btn-format-comma" class="r-btn-compact" title="Comma Style">,</button>
+                <button id="btn-dec-increase" class="r-btn-compact" title="Increase Decimal">.00→</button>
+                <button id="btn-dec-decrease" class="r-btn-compact" title="Decrease Decimal">←.0</button>
+            </div>
+        </div>
+
+        <div class="ribbon-divider"></div>
+
+        <!-- 6. Conditional Formatting & Tables -->
+        <div class="ribbon-section ribbon-section-cond">
+            <div class="ribbon-2row-col" style="align-items: center; justify-content: center; gap: 4px;">
+                <button id="btn-cond-format" class="r-btn-icon-labeled" title="Conditional Formatting">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="2" fill="#38bdf8"/><line x1="3" y1="14" x2="21" y2="14"/></svg>
+                    <span>Cond.</span>
+                </button>
+                <button id="btn-format-table" class="r-btn-icon-labeled" title="Format as Table">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                    <span>Table</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="ribbon-divider"></div>
+
+        <!-- 7. Cell Styles Gallery (Normal, Neutral, Feuille, Accents) -->
+        <div class="ribbon-section ribbon-section-styles">
+            <div class="cell-styles-gallery">
+                <button class="cell-style-chip style-normal" data-style="normal" title="Normal 2 2">Normal 2 2</button>
+                <button class="cell-style-chip style-feuil" data-style="feuil" title="Normal_Feuil1">Normal_Feuil1</button>
+                <button class="cell-style-chip style-active-normal" data-style="accent" title="Normal">Normal</button>
+                <button class="cell-style-chip style-neutral" data-style="neutral" title="Neutral">Neutral</button>
+            </div>
+            <button class="r-btn-expand-gallery" title="More Cell Styles">▾</button>
+        </div>
+
+        <div class="ribbon-divider"></div>
+
+        <!-- 8. Cells Operations (Insert, Delete, Format) -->
+        <div class="ribbon-section ribbon-section-cells">
+            <button id="btn-insert-cells" class="r-btn-icon-labeled" title="Insert Rows / Columns">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Insert</span>
+            </button>
+            <button id="btn-delete-cells" class="r-btn-icon-labeled" title="Delete Rows / Columns">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Delete</span>
+            </button>
+            <button id="btn-format-cells" class="r-btn-icon-labeled" title="Format Cell Dimensions">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                <span>Format</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Formula Bar -->
+    <div class="formula-bar-container">
+        <div id="cell-address" class="cell-address-box">K2</div>
+        <div class="fx-symbol">fx</div>
+        <input type="text" id="formula-input" class="formula-input" placeholder="Enter value or formula (e.g. =SUM(A1:A5) or =VLOOKUP(...))">
+    </div>
+
+    <!-- Main Workspace (HTML5 Canvas 2D) -->
+    <main class="spreadsheet-workspace">
+        <canvas id="grid-canvas" class="grid-canvas"></canvas>
+        <input type="text" id="in-cell-editor" class="in-cell-editor">
+        <!-- Interactive AutoFilter Popup -->
+        <div id="filter-popup" style="display: none; position: absolute; background: #262626; color: #f3f4f6; border: 1px solid #404040; box-shadow: 0 4px 16px rgba(0,0,0,0.5); border-radius: 4px; padding: 10px; z-index: 200; width: 210px;"></div>
+    </main>
+
+    <!-- Bottom Sheet Tabs Bar -->
+    <footer class="sheet-tabs-bar">
+        <div id="sheet-tabs" style="display: flex; gap: 4px;"></div>
+        <button id="btn-add-sheet" class="btn-add-sheet" title="Add Sheet">+</button>
+    </footer>
+
+    <!-- Application Script -->
+    <script type="module" src="src/ui/app.js"></script>
+</body>
+</html>

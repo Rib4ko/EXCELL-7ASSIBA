@@ -1,0 +1,4 @@
+node_modules/
+.desktop_profile/
+package-lock.json
+*.log
