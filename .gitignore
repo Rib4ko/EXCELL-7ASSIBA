@@ -2,3 +2,11 @@ node_modules/
 .desktop_profile/
 package-lock.json
 *.log
+
+# Separate workspace scripts
+app.py
+nasa.py
+train_model.py
+model.pkl
+microgravity_flame_telemetry.csv
+

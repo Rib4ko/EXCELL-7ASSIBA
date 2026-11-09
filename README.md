@@ -1,6 +1,10 @@
 # EXCELL-7ASSIBA
 
-A high-performance Excel-compatible desktop spreadsheet application built with vanilla JavaScript, HTML5 Canvas 2D virtualization, dynamic DAG recalculation engine, and modern dark-mode ribbon interface.
+A high-performance Excel-compatible desktop and web spreadsheet application built with vanilla JavaScript, HTML5 Canvas 2D virtualization, dynamic DAG recalculation engine, and modern dark-mode ribbon interface.
+
+## 🌐 Live Online Demo
+Use L7ASSIBA directly online in your browser for free:
+👉 **[https://rib4ko.github.io/EXCELL-7ASSIBA/](https://rib4ko.github.io/EXCELL-7ASSIBA/)**
 
 ## Features
 - **High-DPI Virtualized Canvas Grid**: Ultra-smooth scrolling, column/row resizing, auto-fit, selection range, and drag-to-fill handles.
